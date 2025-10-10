@@ -1,0 +1,29 @@
+{
+  "name": "realtime-ai",
+  "version": "1.0.0",
+  "main": "index.js",
+  
+  "scripts": {
+    "start": "cross-env node server.js",
+    "dev": "cross-env node --inspect --watch-path=./ ./server.js"
+  },
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "morgan": "^1.10.1",
+    "ollama": "^0.6.0",
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "@types/node": "^24.6.2",
+    "cross-env": "^10.1.0"
+  }
+}
