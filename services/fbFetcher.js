@@ -1,7 +1,3 @@
-
-// import { chromium } from 'playwright-extra';
-// import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-
 const { chromium } = require("playwright-extra")
 const StealthPlugin = require("puppeteer-extra-plugin-stealth")
 
@@ -169,6 +165,7 @@ async function scrapeFacebookAds(search_term, maxAds, headless) {
     console.log(`Found ${allAds.length} ads on the page`);
 
     const ads = [];
+    const skipped = [];
     // let adNum = 0;
     for (const ad of allAds.slice(0, maxAds)) {
         try {
@@ -177,13 +174,25 @@ async function scrapeFacebookAds(search_term, maxAds, headless) {
 
             const data = await extractAdData(ad);
             // data.ad_number = ++adNum;
-            ads.push(data);
+            len = data.ad_text.length
+            if (len < 2000)
+                ads.push(data);
+            else
+                skipped.push({
+                    libraryId: data.libraryId,
+                    page_name: data.page_name,
+                    reason: "too long",
+                    len,
+                });
         } catch (err) {
             console.error("Error extracting ad:", err);
         }
     }
 
     await browser.close();
+    console.log(`✅ Kept ${ads.length} ads | 🪶 Skipped ${skipped.length} (too long)`);
+    console.log("✅ Kept: ", (ads));
+    console.log("🪶 Skipped: ", (skipped));
     return ads;
 }
 

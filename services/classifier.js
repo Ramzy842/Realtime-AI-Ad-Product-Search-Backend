@@ -22,9 +22,9 @@ function buildPrompt(data) {
     - Analyze and cross-reference only the following fields in each ad object to give accurate results:
         - page_name
         - ad_text
+        - link_url
         - link_domain
         - cta_button
-    - For long text, analyze first 2 sentences - if not product-related, skip the entire ad object.
     - You also have a task of identifying what each product's ad:
         -   Brand: brand/brands advertised in the ad.
         -   Category: category/categories the product in the ad belongs to.
@@ -38,6 +38,7 @@ function buildPrompt(data) {
     - [{"libraryId": libraryId of the analyzed ad object,"category":["Fitness", "Clothing"],"brand":["Nike", "Adidas"],"subCategory": ["Apparel", "Shoes"]}]
     Here's the data to analyze: ${JSON.stringify(data)}`
 }
+
 
 async function classifyBatch(data, model) {
     const prompt = buildPrompt(data);
@@ -68,5 +69,6 @@ async function classifyBatch(data, model) {
         return [];
     }
 }
+
 
 module.exports = { classifyBatch }
