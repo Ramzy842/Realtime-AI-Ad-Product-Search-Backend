@@ -139,16 +139,15 @@ async function scrapeFacebookAds(search_term, maxAds, headless) {
         // Scroll to bottom
         console.log("All ads length: ", allAds.length);
 
-        await page.evaluate(() => window.scrollBy(0, window.innerHeight));
-        await page.waitForTimeout(1000);
-
+        // await page.waitForTimeout(1000);
+        
         // Try all selectors in priority order
         let adContainers = [];
         for (const s of selectors) {
             adContainers = await page.$$(s);
             if (adContainers.length) break;
         }
-
+        
         // Check progress
         if (adContainers.length > previousCount) {
             previousCount = adContainers.length;
@@ -158,8 +157,11 @@ async function scrapeFacebookAds(search_term, maxAds, headless) {
             triesWithoutNewAds++;
             console.log("No new ads loaded, retry:", triesWithoutNewAds);
         }
-
+        
         allAds = adContainers;
+        if (allAds.length >= maxAds)
+            break;
+        await page.evaluate(() => window.scrollBy(0, window.innerHeight));
     }
 
     console.log(`Found ${allAds.length} ads on the page`);
